@@ -4,13 +4,17 @@ import logger from "morgan";
 
 import indexRouter from "./routes/index.js";
 import usersRouter from "./routes/users.js";
+import * as config from "./config.js";
 
 import mongoose from 'mongoose';
-mongoose.connect('mongodb://127.0.0.1/express-api');
+mongoose.connect(config.databaseUrl);
 
 const app = express();
 
-app.use(logger("dev"));
+if (process.env.NODE_ENV !== 'test') {
+  app.use(logger("dev"));
+}
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -24,6 +28,8 @@ app.use(function (req, res, next) {
 
 // error handler
 app.use(function (err, req, res, next) {
+  console.warn(err.stack);
+
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};

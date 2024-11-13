@@ -1,4 +1,11 @@
+import * as dotenv from 'dotenv';
+
+dotenv.config();
+
 export const port = process.env.PORT ?? 3000;
+export const bcryptCostFactor = 10;
+export const secret = process.env.SECRET;
+export const databaseUrl = process.env.DATABASE_URL ?? 'mongodb://127.0.0.1/express-api';
 
 // Validate that port is a positive integer.
 if (process.env.PORT) {
